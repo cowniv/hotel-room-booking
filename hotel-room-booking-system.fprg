@@ -8,3 +8,13 @@
         <attribute name="created" value="SmFzbWluIEl2eSBGZWRpbG87TUlOU0VMOzIwMjUtMDktMTk7MDM6Mjc6MDIgUE07MzMyMw=="/>
         <attribute name="edited" value="SmFzbWluIEl2eSBGZWRpbG87TUlOU0VMOzIwMjUtMDktMTk7MDM6Mzg6MzcgUE07MTszNDQx"/>
     </attributes>
+    <function name="Main" type="None" variable="">
+        <parameters/>
+        <body>
+            <declare name="roomType" type="String" array="False" size=""/>
+            <declare name="guests, days, feePerDay, capacity, totalFee" type="Integer" array="False" size=""/>
+            <output expression="&quot;Enter room type (single/double/family): &quot;" newline="True"/>
+            <input variable="roomType"/>
+            <output expression="&quot;Enter number of guests: &quot;" newline="True"/>
+            <input variable="guests"/>
+            <output expression="&quot;Enter number of days: &quot;" newline="True"/>
