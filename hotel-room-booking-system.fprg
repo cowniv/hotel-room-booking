@@ -18,3 +18,13 @@
             <output expression="&quot;Enter number of guests: &quot;" newline="True"/>
             <input variable="guests"/>
             <output expression="&quot;Enter number of days: &quot;" newline="True"/>
+            <input variable="days"/>
+            <if expression="roomType == &quot;single&quot;">
+                <then>
+                    <assign variable="feePerDay" expression="1500"/>
+                    <assign variable="capacity" expression="1"/>
+                </then>
+                <else>
+                    <if expression="roomType == &quot;double&quot;">
+                        <then>
+                            <assign variable="feePerDay" expression="2500"/>
