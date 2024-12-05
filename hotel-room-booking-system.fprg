@@ -28,3 +28,13 @@
                     <if expression="roomType == &quot;double&quot;">
                         <then>
                             <assign variable="feePerDay" expression="2500"/>
+                            <assign variable="capacity" expression="2"/>
+                        </then>
+                        <else>
+                            <if expression="roomType == &quot;family&quot;">
+                                <then>
+                                    <assign variable="feePerDay" expression="5000"/>
+                                    <assign variable="capacity" expression="5"/>
+                                </then>
+                                <else>
+                                    <output expression="&quot;Invalid room type.&quot;" newline="True"/>
