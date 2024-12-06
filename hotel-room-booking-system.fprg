@@ -38,3 +38,13 @@
                                 </then>
                                 <else>
                                     <output expression="&quot;Invalid room type.&quot;" newline="True"/>
+                                </else>
+                            </if>
+                        </else>
+                    </if>
+                </else>
+            </if>
+            <if expression="guests &gt; capacity">
+                <then>
+                    <output expression="&quot;Too many guests for the selected room type.&quot;" newline="True"/>
+                </then>
