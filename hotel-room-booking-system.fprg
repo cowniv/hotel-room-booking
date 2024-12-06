@@ -48,3 +48,12 @@
                 <then>
                     <output expression="&quot;Too many guests for the selected room type.&quot;" newline="True"/>
                 </then>
+                <else>
+                    <assign variable="totalFee" expression="feePerDay * days"/>
+                    <output expression="&quot;Booking successful!&quot;" newline="True"/>
+                    <output expression="&quot;Total Fee: &quot; + totalFee" newline="True"/>
+                </else>
+            </if>
+        </body>
+    </function>
+</flowgorithm>
