@@ -27,3 +27,32 @@
             <input type="date" id="checkout" required>
           </label>
         </div>
+        <div class="row">
+          <label>Guests
+            <input type="number" id="guests" min="1" max="5" value="1" required>
+          </label>
+          <label>Full name
+            <input type="text" id="name" placeholder="Juan Dela Cruz" required>
+          </label>
+        </div>
+        <label>Email
+          <input type="email" id="email" placeholder="juan@email.com" required>
+        </label>
+
+        <fieldset class="addons">
+          <legend>Add-ons (per night)</legend>
+          <div id="addons"></div>
+        </fieldset>
+
+        <ul id="errors" class="errors"></ul>
+        <button type="submit" class="btn">Confirm booking</button>
+      </form>
+    </section>
+
+    <aside class="panel summary">
+      <h2>Booking summary</h2>
+      <dl id="summary"></dl>
+      <p class="total">Total: <strong id="total">₱0</strong></p>
+    </aside>
+  </main>
+
