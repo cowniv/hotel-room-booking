@@ -1,0 +1,17 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #f6f1ea;
+  --card: #ffffff;
+  --ink: #2b2420;
+  --muted: #8a7f76;
+  --accent: #9c4a2f;
+  --accent-light: #f3e2d8;
+  --line: #e6ddd3;
+  --error: #c0392b;
+}
+
+body {
+  font-family: Georgia, "Times New Roman", serif;
+  background: var(--bg);
+  color: var(--ink);
