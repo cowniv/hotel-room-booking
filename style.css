@@ -48,3 +48,19 @@ body {
   padding: 12px;
   cursor: pointer;
   background: none;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+}
+.room:hover { border-color: var(--accent); }
+.room.selected { border-color: var(--accent); background: var(--accent-light); }
+.room h3 { font-size: 1rem; }
+.room .rate { color: var(--accent); font-weight: bold; }
+.room small { color: var(--muted); display: block; }
+
+form label { display: block; font-size: .9rem; margin-bottom: 12px; flex: 1; }
+form input[type="date"], form input[type="number"], form input[type="text"], form input[type="email"] {
+  display: block;
+  width: 100%;
+  margin-top: 4px;
+  padding: 8px 10px;
