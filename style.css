@@ -64,3 +64,20 @@ form input[type="date"], form input[type="number"], form input[type="text"], for
   width: 100%;
   margin-top: 4px;
   padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  font: inherit;
+}
+.row { display: flex; gap: 12px; }
+
+.addons { border: 1px solid var(--line); border-radius: 8px; padding: 10px 14px; margin-bottom: 12px; }
+.addons legend { padding: 0 6px; font-size: .9rem; }
+.addons label { display: flex; align-items: center; gap: 8px; margin: 6px 0; }
+.addons span.price { margin-left: auto; color: var(--muted); }
+
+.errors { color: var(--error); font-size: .9rem; margin: 0 0 12px 18px; }
+
+.btn {
+  background: var(--accent);
+  color: #fff;
+  border: none;
