@@ -91,3 +91,34 @@ function validate() {
   else if (guests > room.capacity) errors.push(`Too many guests for the ${room.name} room (max ${room.capacity}).`);
 
   if (nameEl.value.trim().length < 2) errors.push("Enter your full name.");
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailEl.value.trim())) errors.push("Enter a valid email.");
+
+  return errors;
+}
+
+// ---------- rendering ----------
+function renderRooms() {
+  roomsEl.innerHTML = Object.entries(ROOMS)
+    .map(([key, r]) => `
+      <button type="button" class="room ${key === selectedRoom ? "selected" : ""}" data-room="${key}">
+        <h3>${r.name}</h3>
+        <span class="rate">${peso(r.feePerDay)}</span> / night
+        <small>Up to ${r.capacity} guest${r.capacity > 1 ? "s" : ""}</small>
+        <small>${r.desc}</small>
+      </button>`)
+    .join("");
+}
+
+function renderAddons() {
+  addonsEl.innerHTML = ADDONS.map((a) => `
+    <label>
+      <input type="checkbox" id="${a.id}">
+      ${a.label}
+      <span class="price">${peso(a.price)}${a.perGuest ? " / guest" : ""}</span>
+    </label>`).join("");
+}
+
+function renderSummary() {
+  const c = calculate();
+  const rows = [
+    ["Room", c.room.name],
