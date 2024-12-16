@@ -29,3 +29,34 @@ const emailEl = document.getElementById("email");
 const errorsEl = document.getElementById("errors");
 const summaryEl = document.getElementById("summary");
 const totalEl = document.getElementById("total");
+const listEl = document.getElementById("booking-list");
+const emptyEl = document.getElementById("empty");
+
+// ---------- helpers ----------
+const peso = (n) => "₱" + n.toLocaleString("en-PH");
+
+function todayString() {
+  const d = new Date();
+  d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+  return d.toISOString().slice(0, 10);
+}
+
+function countNights(checkin, checkout) {
+  if (!checkin || !checkout) return 0;
+  const ms = new Date(checkout) - new Date(checkin);
+  return Math.round(ms / (1000 * 60 * 60 * 24));
+}
+
+function saveBookings() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(bookings));
+}
+
+// Two bookings for the same room type overlap if one starts before the other ends
+function isRoomTaken(roomType, checkin, checkout) {
+  return bookings.some(
+    (b) => b.status === "confirmed" && b.roomType === roomType &&
+      checkin < b.checkout && checkout > b.checkin
+  );
+}
+
+// ---------- the calculation (flowchart: totalFee = feePerDay * days) ----------
