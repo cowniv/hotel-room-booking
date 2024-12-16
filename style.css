@@ -97,3 +97,19 @@ form input[type="date"], form input[type="number"], form input[type="text"], for
 .bookings { max-width: 1000px; margin: 20px auto 0; }
 #booking-list { list-style: none; }
 #booking-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+}
+#booking-list li.cancelled { opacity: .5; }
+#booking-list li.cancelled strong { text-decoration: line-through; }
+.muted { color: var(--muted); }
+
+@media (max-width: 760px) {
+  .layout { grid-template-columns: 1fr; }
+  .rooms { grid-template-columns: 1fr; }
+  .row { flex-direction: column; gap: 0; }
+}
