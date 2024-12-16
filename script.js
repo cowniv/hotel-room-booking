@@ -60,3 +60,34 @@ function isRoomTaken(roomType, checkin, checkout) {
 }
 
 // ---------- the calculation (flowchart: totalFee = feePerDay * days) ----------
+function calculate() {
+  const room = ROOMS[selectedRoom];
+  const nights = countNights(checkinEl.value, checkoutEl.value);
+  const guests = Number(guestsEl.value) || 0;
+  const roomFee = room.feePerDay * Math.max(nights, 0);
+
+  const chosen = ADDONS.filter((a) => document.getElementById(a.id).checked);
+  const addonFee = chosen.reduce((sum, a) => {
+    const qty = a.perGuest ? guests : 1;
+    return sum + a.price * qty * Math.max(nights, 0);
+  }, 0);
+
+  return { room, nights, guests, roomFee, chosen, addonFee, total: roomFee + addonFee };
+}
+
+// ---------- validation (flowchart: invalid room / too many guests) ----------
+function validate() {
+  const errors = [];
+  const { room, nights, guests } = calculate();
+
+  if (!ROOMS[selectedRoom]) errors.push("Invalid room type.");
+  if (!checkinEl.value || !checkoutEl.value) errors.push("Pick both check-in and check-out dates.");
+  else if (checkinEl.value < todayString()) errors.push("Check-in can't be in the past.");
+  else if (nights < 1) errors.push("Check-out must be at least 1 night after check-in.");
+  else if (isRoomTaken(selectedRoom, checkinEl.value, checkoutEl.value))
+    errors.push(`The ${room.name} room is already booked on those dates.`);
+
+  if (guests < 1) errors.push("Enter at least 1 guest.");
+  else if (guests > room.capacity) errors.push(`Too many guests for the ${room.name} room (max ${room.capacity}).`);
+
+  if (nameEl.value.trim().length < 2) errors.push("Enter your full name.");
