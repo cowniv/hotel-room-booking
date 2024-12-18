@@ -122,3 +122,34 @@ function renderSummary() {
   const c = calculate();
   const rows = [
     ["Room", c.room.name],
+    ["Rate", peso(c.room.feePerDay) + " / night"],
+    ["Nights", c.nights > 0 ? c.nights : "—"],
+    ["Guests", c.guests || "—"],
+    ["Room fee", peso(c.roomFee)],
+    ...c.chosen.map((a) => [a.label, "included"]),
+    ["Add-ons", peso(c.addonFee)],
+  ];
+  summaryEl.innerHTML = rows.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join("");
+  totalEl.textContent = peso(c.total);
+}
+
+function renderBookings() {
+  emptyEl.hidden = bookings.length > 0;
+  listEl.innerHTML = bookings
+    .slice()
+    .reverse()
+    .map((b) => `
+      <li class="${b.status}">
+        <div>
+          <strong>${ROOMS[b.roomType].name} room · ${b.name}</strong><br>
+          <span class="muted">${b.checkin} → ${b.checkout} · ${b.nights} night(s) · ${b.guests} guest(s) · ${peso(b.total)}</span>
+          ${b.status === "cancelled" ? '<span class="muted"> · cancelled</span>' : ""}
+        </div>
+        ${b.status === "confirmed" ? `<button class="btn small" data-cancel="${b.id}">Cancel</button>` : ""}
+      </li>`)
+    .join("");
+}
+
+// ---------- events ----------
+roomsEl.addEventListener("click", (e) => {
+  const btn = e.target.closest(".room");
