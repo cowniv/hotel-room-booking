@@ -60,3 +60,96 @@ function isRoomTaken(roomType, checkin, checkout) {
 }
 
 // ---------- the calculation (flowchart: totalFee = feePerDay * days) ----------
+function calculate() {
+  const room = ROOMS[selectedRoom];
+  const nights = countNights(checkinEl.value, checkoutEl.value);
+  const guests = Number(guestsEl.value) || 0;
+  const roomFee = room.feePerDay * Math.max(nights, 0);
+
+  const chosen = ADDONS.filter((a) => document.getElementById(a.id).checked);
+  const addonFee = chosen.reduce((sum, a) => {
+    const qty = a.perGuest ? guests : 1;
+    return sum + a.price * qty * Math.max(nights, 0);
+  }, 0);
+
+  return { room, nights, guests, roomFee, chosen, addonFee, total: roomFee + addonFee };
+}
+
+// ---------- validation (flowchart: invalid room / too many guests) ----------
+function validate() {
+  const errors = [];
+  const { room, nights, guests } = calculate();
+
+  if (!ROOMS[selectedRoom]) errors.push("Invalid room type.");
+  if (!checkinEl.value || !checkoutEl.value) errors.push("Pick both check-in and check-out dates.");
+  else if (checkinEl.value < todayString()) errors.push("Check-in can't be in the past.");
+  else if (nights < 1) errors.push("Check-out must be at least 1 night after check-in.");
+  else if (isRoomTaken(selectedRoom, checkinEl.value, checkoutEl.value))
+    errors.push(`The ${room.name} room is already booked on those dates.`);
+
+  if (guests < 1) errors.push("Enter at least 1 guest.");
+  else if (guests > room.capacity) errors.push(`Too many guests for the ${room.name} room (max ${room.capacity}).`);
+
+  if (nameEl.value.trim().length < 2) errors.push("Enter your full name.");
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailEl.value.trim())) errors.push("Enter a valid email.");
+
+  return errors;
+}
+
+// ---------- rendering ----------
+function renderRooms() {
+  roomsEl.innerHTML = Object.entries(ROOMS)
+    .map(([key, r]) => `
+      <button type="button" class="room ${key === selectedRoom ? "selected" : ""}" data-room="${key}">
+        <h3>${r.name}</h3>
+        <span class="rate">${peso(r.feePerDay)}</span> / night
+        <small>Up to ${r.capacity} guest${r.capacity > 1 ? "s" : ""}</small>
+        <small>${r.desc}</small>
+      </button>`)
+    .join("");
+}
+
+function renderAddons() {
+  addonsEl.innerHTML = ADDONS.map((a) => `
+    <label>
+      <input type="checkbox" id="${a.id}">
+      ${a.label}
+      <span class="price">${peso(a.price)}${a.perGuest ? " / guest" : ""}</span>
+    </label>`).join("");
+}
+
+function renderSummary() {
+  const c = calculate();
+  const rows = [
+    ["Room", c.room.name],
+    ["Rate", peso(c.room.feePerDay) + " / night"],
+    ["Nights", c.nights > 0 ? c.nights : "—"],
+    ["Guests", c.guests || "—"],
+    ["Room fee", peso(c.roomFee)],
+    ...c.chosen.map((a) => [a.label, "included"]),
+    ["Add-ons", peso(c.addonFee)],
+  ];
+  summaryEl.innerHTML = rows.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join("");
+  totalEl.textContent = peso(c.total);
+}
+
+function renderBookings() {
+  emptyEl.hidden = bookings.length > 0;
+  listEl.innerHTML = bookings
+    .slice()
+    .reverse()
+    .map((b) => `
+      <li class="${b.status}">
+        <div>
+          <strong>${ROOMS[b.roomType].name} room · ${b.name}</strong><br>
+          <span class="muted">${b.checkin} → ${b.checkout} · ${b.nights} night(s) · ${b.guests} guest(s) · ${peso(b.total)}</span>
+          ${b.status === "cancelled" ? '<span class="muted"> · cancelled</span>' : ""}
+        </div>
+        ${b.status === "confirmed" ? `<button class="btn small" data-cancel="${b.id}">Cancel</button>` : ""}
+      </li>`)
+    .join("");
+}
+
+// ---------- events ----------
+roomsEl.addEventListener("click", (e) => {
+  const btn = e.target.closest(".room");
