@@ -184,3 +184,34 @@ form.addEventListener("submit", (e) => {
     checkin: checkinEl.value,
     checkout: checkoutEl.value,
     nights: c.nights,
+    guests: c.guests,
+    addons: c.chosen.map((a) => a.id),
+    name: nameEl.value.trim(),
+    email: emailEl.value.trim(),
+    total: c.total,
+    status: "confirmed",
+  });
+  saveBookings();
+  renderBookings();
+  alert(`Booking successful!\nTotal Fee: ${peso(c.total)}`);
+  form.reset();
+  renderSummary();
+});
+
+listEl.addEventListener("click", (e) => {
+  const id = Number(e.target.dataset.cancel);
+  if (!id) return;
+  if (!confirm("Cancel this booking?")) return;
+  const booking = bookings.find((b) => b.id === id);
+  booking.status = "cancelled";
+  saveBookings();
+  renderBookings();
+});
+
+// ---------- start ----------
+checkinEl.min = todayString();
+checkoutEl.min = todayString();
+renderRooms();
+renderAddons();
+renderSummary();
+renderBookings();
