@@ -153,3 +153,34 @@ function renderBookings() {
 // ---------- events ----------
 roomsEl.addEventListener("click", (e) => {
   const btn = e.target.closest(".room");
+  if (!btn) return;
+  selectedRoom = btn.dataset.room;
+  guestsEl.max = ROOMS[selectedRoom].capacity;
+  renderRooms();
+  renderSummary();
+});
+
+form.addEventListener("input", renderSummary);
+
+checkinEl.addEventListener("change", () => {
+  // check-out has to be at least the day after check-in
+  if (checkinEl.value) {
+    const next = new Date(checkinEl.value);
+    next.setDate(next.getDate() + 1);
+    checkoutEl.min = next.toISOString().slice(0, 10);
+  }
+});
+
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const errors = validate();
+  errorsEl.innerHTML = errors.map((msg) => `<li>${msg}</li>`).join("");
+  if (errors.length) return;
+
+  const c = calculate();
+  bookings.push({
+    id: Date.now(),
+    roomType: selectedRoom,
+    checkin: checkinEl.value,
+    checkout: checkoutEl.value,
+    nights: c.nights,
