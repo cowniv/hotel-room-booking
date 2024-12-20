@@ -23,3 +23,8 @@ Open `index.html` in a browser or serve the directory with a static file server.
 
 ## What I practiced
 
+- Translating flowchart decisions and formulas into JavaScript functions
+- Working with dates and overlapping booking ranges
+- Event delegation for room cards and cancellation controls
+- Persisting browser state with `localStorage`
+- Applying array methods such as `filter`, `reduce`, `some`, and `map`
