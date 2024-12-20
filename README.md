@@ -18,3 +18,8 @@ The web adaptation was added later. It keeps the original room rates and capacit
 - A locally saved booking list with cancellation support
 
 ## Run locally
+
+Open `index.html` in a browser or serve the directory with a static file server.
+
+## What I practiced
+
