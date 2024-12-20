@@ -8,3 +8,8 @@ The original Flowgorithm source was created on September 19, 2025. It asks for a
 
 The web adaptation was added later. It keeps the original room rates and capacity rules while expanding the exercise into an interactive booking form.
 
+## Features
+
+- Three room types with the flowchart's rates and guest limits
+- Check-in and check-out date pickers with automatic night counting
+- Breakfast, parking, and spa add-ons
